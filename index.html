@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="We present Fast and Safe Trajectory Optimization for Mobile Manipulators With Neural Configuration Space Distance Field.">
+  <meta name="keywords" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fast and Safe Trajectory Optimization for Mobile Manipulators With Neural Configuration Space Distance Field</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap JS (with Popper.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/icon.jpg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <!-- <script src="./static/js/index.js"></script> -->
+</head>
+<body>
+
+<!-- <nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://hypernerf.github.io">
+            HyperNeRF
+          </a>
+          <a class="navbar-item" href="https://nerfies.github.io">
+            Nerfies
+          </a>
+          <a class="navbar-item" href="https://latentfusion.github.io">
+            LatentFusion
+          </a>
+          <a class="navbar-item" href="https://photoshape.github.io">
+            PhotoShape
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav> -->
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            Fast and Safe Trajectory Optimization for Mobile Manipulators With Neural Configuration Space Distance Field
+          </h1>
+          <!-- <h2 class="title is-3 publication-title">
+            Conference Title
+          </h2> -->
+          <div class="is-size-5 publication-authors">
+
+          </div>
+
+          <div class="is-size-5 publication-authors">
+
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- Code Link. -->
+              <span class="link-block">
+                <!-- https://github.com/google/nerfies -->
+                <a href="https://github.com/anonymousProjectWebsite/GCDF.git"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                </a>
+              </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Overview. -->
+<!-- Overview. -->
+<figure class="content is-centered is-full-width has-text-centered">
+  <img src="./static/images/overview.png" width="65%" alt="Overview">
+  <figcaption style="margin-top: 10px; font-size: 1.5rem; color: #333; max-width: 65%; margin-left: auto; margin-right: auto; text-align: center;">
+    Trajectory generation in complex environments for mobile manipulators using the proposed numerical optimization algorithm with neural Generalized Configuration Space Distance Fields. Starting from a trivial initial guess (the mobile base linearly interpolated between start and goal while the manipulator joints are all zeros, i.e., kept upright), the solver generates collision-free trajectories from scratch, exhibiting smooth and agile maneuvers that leverage whole-body coordination for safe obstacle avoidance. (a) Simulation results are shown from front and top views. (b) Real-world deployment of our planner. <strong>Left:</strong> in a laboratory obstacle course composed of stacked and overlapping blocks with limited clearance, the robot performs agile base--arm reconfiguration while traversing tight passages (<em>t</em><sub>1</sub>–<em>t</em><sub>8</sub>).<strong>Right</strong> in an office environment, the robot follows a multi-goal route (with an intermediate waypoint) through narrow corridors and furniture-dense areas (<em>t</em><sub>1</sub>–<em>t</em><sub>12</sub>). Orange arrows visualize the direction of motion.
+  </figcaption>
+</figure>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+           Mobile manipulators promise agile, long-horizon behavior by coordinating base and arm motion, yet whole-body trajectory optimization in cluttered, confined spaces remains difficult due to high-dimensional nonconvexity and the need for fast, accurate collision reasoning. Configuration Space Distance Fields (CDF) enable fixed-base manipulators to model collisions directly in configuration space via smooth, implicit distances. This representation holds strong potential to bypass the nonlinear configuration-to-workspace mapping while preserving accurate whole-body geometry and providing optimization-friendly collision costs. Yet, extending this capability to mobile manipulators is hindered by unbounded workspaces and tighter base–arm coupling. We lift this promise to mobile manipulation with Generalized Configuration Space Distance Fields (GCDF), extending CDF to robots with both translational and rotational joints in unbounded workspaces with tighter base–arm coupling.
+           We prove that GCDF preserves Euclidean-like local distance structure and accurately encodes whole-body geometry in configuration space, and develop a data generation and training pipeline that yields continuous neural GCDFs with accurate values and gradients, supporting efficient GPU-batched queries. Building on this representation, we develop a high-performance sequential convex optimization framework centered on GCDF-based collision reasoning. The solver scales to large numbers of implicit constraints through (i) online specification of neural constraints, (ii) sparsity-aware active-set detection with parallel batched evaluation across thousands of constraints, and (iii) incremental constraint management for rapid replanning under scene changes. Extensive randomized high-density benchmarks and real-robot experiments demonstrate consistently superior success rates, trajectory quality, and solve times compared to strong baselines, enabling fast, safe, and reliable whole-body planning from naive initializations. 
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+  </div>
+</section>
+
+<!-- Overview -->
+<section class="hero teaser">
+  <div class="container">
+    <div class="hero-body">
+      <div class="video-container">
+        <h3 class="video-title" id="video-title">Trajectories Animation</h3>
+        <button class="nav-button left" onclick="prevVideo()">&#9664;</button>
+        
+        <video id="main-video" controls hidden muted loop>
+          <source id="video-source" type="video/mp4">
+        </video>
+        
+        <button class="nav-button right" onclick="nextVideo()">&#9654;</button>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .video-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+    max-width: 1500px;
+    margin: auto;
+  }
+  
+  .video-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  video {
+    width: 1400px;
+    height: 600px;
+    border-radius: 10px;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .nav-button.left { left: -30px; }
+  .nav-button.right { right: -30px; }
+  
+  .footnote {
+    text-align: center;
+    font-size: 2rem;
+    color: gray;
+    margin-top: 10px;
+  }
+</style>
+
+<script>
+  const videoList = [
+    { src: "./static/images/sim_80.mp4", title: "Representative trajectories in randomized map (Number of Obstacles: 80)" },
+    { src: "./static/images/sim_100.mp4", title: "Representative trajectories in randomized map (Number of Obstacles: 100)" },
+    { src: "./static/images/sim_120.mp4", title: "Representative trajectories in randomized map (Number of Obstacles: 120)" },
+    { src: "./static/images/sim_goal_3in1.mp4", title: "Goalkeeper example with online GCDF-based control" },
+  ];
+
+  let currentIndex = 0;
+  const videoElement = document.getElementById("main-video");
+  const videoSource = document.getElementById("video-source");
+  const titleElement = document.getElementById("video-title");
+  const footnote = document.getElementById("footnote");
+
+  function updateVideo() {
+    console.log("Updating video to index:", currentIndex);
+    videoElement.style.opacity = 0;
+    setTimeout(() => {
+      videoSource.src = videoList[currentIndex].src;
+      videoElement.load();
+      titleElement.textContent = videoList[currentIndex].title;
+      videoElement.style.opacity = 1;
+      videoElement.hidden = false;
+
+      // Auto-play
+      videoElement.play().catch(error => console.warn("Auto-play was prevented:", error));
+
+      // Display footnote only on the first video
+      footnote.style.display = currentIndex === 0 ? "block" : "none";
+    }, 300);
+  }
+
+  function prevVideo() {
+    currentIndex = (currentIndex - 1 + videoList.length) % videoList.length;
+    updateVideo();
+  }
+
+  function nextVideo() {
+    currentIndex = (currentIndex + 1) % videoList.length;
+    updateVideo();
+  }
+
+  // On page load, start the first video
+  window.onload = function() {
+    console.log("Page loaded, starting video");
+    updateVideo();
+  };
+</script>
+
+
+<!-- Overview -->
+<!-- Real-world carousel (two videos) -->
+<section class="hero teaser">
+  <div class="container">
+    <div class="hero-body">
+      <div class="video-container">
+        <h3 class="video-title" id="rw-video-title">Real-World Push T</h3>
+        <button class="nav-button left" onclick="rwPrevVideo()">&#9664;</button>
+
+        <video id="rw-main-video" controls hidden muted loop playsinline>
+          <source id="rw-video-source" type="video/mp4">
+        </video>
+
+        <button class="nav-button right" onclick="rwNextVideo()">&#9654;</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const realVideoList = [
+    { src: "./static/images/lab.mp4", title: "Real-World deployment in lab environment (4x)" },
+    { src: "./static/images/office.mp4", title: "Real-World deployment in office environment (4x)" }
+  ];
+
+  let rwCurrentIndex = 0;
+  const rwVideoElement = document.getElementById("rw-main-video");
+  const rwVideoSource = document.getElementById("rw-video-source");
+  const rwTitleElement = document.getElementById("rw-video-title");
+
+  function rwUpdateVideo() {
+    rwVideoElement.style.opacity = 0;
+    setTimeout(() => {
+      rwVideoSource.src = realVideoList[rwCurrentIndex].src;
+      rwVideoElement.load();
+      rwTitleElement.textContent = realVideoList[rwCurrentIndex].title;
+      rwVideoElement.hidden = false;
+      rwVideoElement.style.opacity = 1;
+      rwVideoElement.play().catch(() => {});
+    }, 300);
+  }
+
+  function rwPrevVideo() {
+    rwCurrentIndex = (rwCurrentIndex - 1 + realVideoList.length) % realVideoList.length;
+    rwUpdateVideo();
+  }
+
+  function rwNextVideo() {
+    rwCurrentIndex = (rwCurrentIndex + 1) % realVideoList.length;
+    rwUpdateVideo();
+  }
+
+  // run after page load (doesn't override your existing window.onload)
+  window.addEventListener("load", rwUpdateVideo);
+</script>
+
+
+<!-- gpt help me put a video here src: "./static/images/real_world_pushT.mp4", title: "Real-World Push T (2x)"  -->
+
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>  @inproceedings{qi2025control_oriented_NC,
+    title={{Control-oriented Clustering of Visual Latent Representation}},
+    author={Qi, Han and Yin, Haocheng and Yang, Heng},
+    booktitle={The Thirteenth International Conference on Learning Representations (ICLR)},
+    year={2025}
+  }
+</code></pre>
+  </div>
+</section> -->
+
+
+<footer class="footer">
+  <div class="container">
+    <!-- <div class="content has-text-centered">
+      <a class="icon-link"
+         href=""> -->
+         <!-- ./static/videos/nerfies_paper.pdf -->
+        <!-- <i class="fas fa-file-pdf"></i>
+      </a> -->
+      <!-- https://github.com/keunhong -->
+      <!-- <a class="icon-link" href="" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a> -->
+    <!-- </div> -->
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            The source code of this website is borrowed from <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>. We thank the authors for sharing the template.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
