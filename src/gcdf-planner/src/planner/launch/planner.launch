@@ -1,0 +1,39 @@
+<launch>
+  <!-- Map/PCD params -->
+  <arg name="pcd_resolution" default="0.1" />
+  <arg name="map_vis_rate" default="10.0" />
+  <arg name="frame_id" default="world" />
+
+  <!-- Visualization params -->
+  <arg name="map_name" default="world_x[-6.00,6.00]_y[-6.00,6.00]_obs120_20251219_061529" />
+  <arg name="rviz" default="true" />
+  <arg name="rviz_config" default="rviz" />
+
+  <node pkg="planner" type="pcd_map_node" name="pcd_map_node" output="screen">
+    <param name="map_name" value="$(arg map_name)" />
+    <param name="resolution" value="$(arg pcd_resolution)" />
+    <param name="vis_rate" value="$(arg map_vis_rate)" />
+    <param name="frame_id" value="$(arg frame_id)" />
+  </node>
+
+  <node pkg="planner" type="planner_vis_node" name="planner_vis_node" output="screen">
+    <rosparam file="$(find planner)/config/vis.yaml" />
+    <param name="map_name" value="$(arg map_name)" />
+  </node>
+
+  <!-- Solver node -->
+  <node pkg="planner" type="SolveMobileManipulatorExp.py" name="gcdf_solver_node" output="screen">
+    <remap from="solver_input_list" to="/planner_vis_node/solver_input_list" />
+    <remap from="global_cloud" to="/pcd_map_node/global_cloud" />
+    <remap from="solver_output_list" to="/planner_vis_node/solver_output_list" />
+  </node>
+<!-- /home/robot/workspace/src/gcdf-planner/src/planner/rviz -->
+<!-- use the rviz config file -->
+  <group if="$(arg rviz)">
+    <node pkg="rviz" type="rviz" name="rviz" output="screen" args="-d $(find planner)/rviz/$(arg rviz_config).rviz" />
+  </group>
+
+  <node pkg="tf2_ros" type="static_transform_publisher" name="world_to_map" output="screen"
+        args="0 0 0 0 0 0 world map" />
+
+</launch>

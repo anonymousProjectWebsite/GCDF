@@ -1,0 +1,11 @@
+# Visualization params for planner_vis_node
+num_goal: 50
+show_goal_set: true
+show_collision_spheres: true
+# Input message params
+state_dim: 9
+horizon_len: 40
+# [x, y, yaw, q1..q6] (size must match state_dim)
+init_state: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+# Optional: restrict which indices from goal_list.txt to use
+# count_list: [1,2,3,4,5]
