@@ -1,0 +1,7 @@
+free_thresh: 0.90
+negate: 0
+origin: [-6.000000, -6.000000, 0.0]
+resolution: 0.100000
+mode: trinary
+occupied_thresh: 0.95
+image: /home/workspace/src/cdf_mm_exp/mm_ros_control/data/exp_data/exp_pcd/world_x[-6.00,6.00]_y[-6.00,6.00]_obs120_20251219_061529/map.pgm
